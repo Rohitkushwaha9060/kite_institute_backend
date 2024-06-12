@@ -1,4 +1,4 @@
-# Kite Inst
+# Kite Institute Backend
 
 ## Installation
 
