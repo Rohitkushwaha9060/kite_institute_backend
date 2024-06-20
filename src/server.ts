@@ -4,6 +4,7 @@ import * as socketIO from 'socket.io';
 // file imports
 import app from '@/app';
 import { logger, secrets } from '@/core';
+import { errorHandler } from './middleware/rest';
 
 // server initialization
 const server = http.createServer(app);
@@ -29,6 +30,9 @@ io.on('connection', (socket) => {
 
 // set io in app
 app.set('socket', io);
+
+// global error handler
+app.use(errorHandler);
 
 // server start
 server.listen(secrets.PORT, () => {
