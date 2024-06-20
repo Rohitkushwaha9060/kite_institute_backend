@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 
 // file imports
 import { logger, secrets } from '@/core';
+import { authRouterRest } from './routes/rest';
 
 // express app initialization
 const app = express();
@@ -28,6 +29,7 @@ app.use(helmet());
 app.use(cookieParser());
 
 // express app routes
+app.use('/api/v1/auth', authRouterRest);
 
 // express app routes
 app.get('/', (req, res) => {
