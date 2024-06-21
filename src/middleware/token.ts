@@ -1,3 +1,4 @@
+import { HttpError } from '@/errors';
 import { Request, Response, NextFunction } from 'express';
 
 export const tokenMiddlewareRest = (
@@ -7,7 +8,7 @@ export const tokenMiddlewareRest = (
 ) => {
     const token = req.cookies['verify-email'] || req.headers['token'];
     if (!token) {
-        return next(new Error('No token found'));
+        return next(new HttpError('No token provided', 401));
     }
     // @ts-ignore
     req.token = token;

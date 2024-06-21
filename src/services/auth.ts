@@ -140,7 +140,7 @@ class AuthService {
     }
 
     // verify email
-    async verifyEmail(token: string) {
+    async verifyEmail(token: string, otp: string) {
         // check if token is valid
         const decodedToken = await tokenService.verifyTokenJwt(
             token,
@@ -169,6 +169,22 @@ class AuthService {
             return {
                 statusCode: 404,
                 message: 'User not found',
+            };
+        }
+
+        // check user already verified
+        if (user.isApproved) {
+            return {
+                statusCode: 400,
+                message: 'User already verified',
+            };
+        }
+
+        // check if otp is valid
+        if (user.otp !== otp) {
+            return {
+                statusCode: 400,
+                message: 'OTP is invalid',
             };
         }
 

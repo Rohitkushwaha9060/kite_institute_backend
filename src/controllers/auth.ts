@@ -24,7 +24,7 @@ class AuthController {
             res.cookie('verify-email', response?.data?.token, {
                 httpOnly: true,
                 maxAge: 60 * 60 * 24 * 1,
-                sameSite: 'strict',
+                sameSite: 'none',
                 secure: true,
             });
             return res.status(201).json({
@@ -55,7 +55,7 @@ class AuthController {
             res.cookie('verify-email', response?.data?.token, {
                 httpOnly: true,
                 maxAge: 60 * 60 * 24 * 1,
-                sameSite: 'strict',
+                sameSite: 'none',
                 secure: true,
             });
 
@@ -71,14 +71,27 @@ class AuthController {
 
     // verify email
     async verifyEmail(req: Request, res: Response, next: NextFunction) {
+        const { otp } = req.body;
+
+        if (!otp) {
+            return next(new HttpError('OTP is required', 400));
+        }
+
         //@ts-ignore
         const token = req.token!;
         if (!token) {
             return next(new HttpError('Token is required', 400));
         }
 
-        const response = await authService.verifyEmail(token);
+        const response = await authService.verifyEmail(token, otp);
+
         if (response.statusCode === 200) {
+            res.cookie('verify-email', null, {
+                httpOnly: true,
+                maxAge: 60,
+                sameSite: 'none',
+                secure: true,
+            });
             return res.status(200).json({
                 statusCode: response.statusCode,
                 message: response.message,
