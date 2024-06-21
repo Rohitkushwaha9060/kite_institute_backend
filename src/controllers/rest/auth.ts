@@ -1,3 +1,4 @@
+import { emailService } from '@/services';
 import { Request, Response, NextFunction } from 'express';
 
 class AuthController {
