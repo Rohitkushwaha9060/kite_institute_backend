@@ -14,23 +14,22 @@ class EmailService {
         return mailGenerator.generate(mailgenContent);
     }
 
-    async sendVerificationEmail(email: string, token: string) {
+    async sendVerificationEmail(email: string, otp: string) {
         const mailgenContent = {
             body: {
-                intro: "Welcome to our app! We're very excited to have you on board.",
+                intro: 'Hi there, welcome to Kite Institute!',
                 dictionary: {
-                    OTP: token,
+                    OTP: otp,
                 },
-                outro: "Need help, or have questions? Just reply to this email, we'd love to help.",
+                outro: 'Please verify your email . ',
             },
         };
 
-        await sendMail(
-            email,
-            'info@kite.com',
-            'Verify your email',
-            await this.emailReady(mailgenContent)
-        );
+        await sendMail({
+            to: email,
+            subject: 'Verify your email',
+            mailBody: await this.emailReady(mailgenContent)!,
+        });
     }
 }
 

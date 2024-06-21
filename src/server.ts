@@ -31,12 +31,12 @@ io.on('connection', (socket) => {
 // set io in app
 app.set('socket', io);
 
-// global error handler
-app.use(errorHandler);
-
 // start graphql server
 import { graphqlServerStart } from './graphql';
 graphqlServerStart();
+
+// global error handler
+app.use(errorHandler);
 
 // server start
 server.listen(secrets.PORT, () => {

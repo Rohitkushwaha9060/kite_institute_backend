@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { HttpError } from './http';
-import { ZodError } from 'zod';
+import * as z from 'zod';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 
 export const errorHandler = (func: Function) => {
@@ -11,7 +11,7 @@ export const errorHandler = (func: Function) => {
             let err;
             if (error instanceof HttpError) {
                 err = error;
-            } else if (error instanceof ZodError) {
+            } else if (error instanceof z.ZodError) {
                 err = new HttpError(
                     error.issues[0].message || 'Unprocessable Entity',
                     400,
