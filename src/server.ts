@@ -34,7 +34,11 @@ app.set('socket', io);
 // global error handler
 app.use(errorHandler);
 
+// start graphql server
+import { graphqlServerStart } from './graphql';
+graphqlServerStart();
+
 // server start
 server.listen(secrets.PORT, () => {
-    logger.info(`Server is running on port ${secrets.PORT}`);
+    logger.info(`🚀 Server is running on port ${secrets.PORT}`);
 });
