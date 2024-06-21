@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 
 // file imports
 import { logger, secrets } from '@/core';
-import { authRouterRest } from './routes/rest';
+import { authRouterRest } from './routes';
 
 // express app initialization
 const app = express();

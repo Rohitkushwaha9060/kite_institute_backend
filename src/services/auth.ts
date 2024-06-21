@@ -1,6 +1,7 @@
 import { prisma, tokenService, hashService, generateOTP } from '@/lib';
 import { ServiceResponse } from '@/interfaces';
 import { emailService } from './email';
+import { secrets } from '@/core';
 
 class AuthService {
     // sign up
@@ -51,7 +52,7 @@ class AuthService {
                 name,
                 email,
             },
-            email,
+            secrets.ACCESS_TOKEN_SECRET,
             '1d'
         );
 
@@ -94,6 +95,14 @@ class AuthService {
             };
         }
 
+        // already verified
+        if (user.isApproved) {
+            return {
+                statusCode: 400,
+                message: 'User already verified',
+            };
+        }
+
         // otp verification
         const otp = String(await generateOTP());
 
@@ -102,7 +111,7 @@ class AuthService {
             {
                 email: user.email,
             },
-            user.email,
+            secrets.ACCESS_TOKEN_SECRET,
             '1d'
         );
 
@@ -131,8 +140,60 @@ class AuthService {
     }
 
     // verify email
-    async verifyEmail(email: string, token: string) {
-        return null;
+    async verifyEmail(token: string) {
+        // check if token is valid
+        const decodedToken = await tokenService.verifyTokenJwt(
+            token,
+            secrets.ACCESS_TOKEN_SECRET
+        );
+
+        // check if token is valid
+        if (!decodedToken) {
+            return {
+                statusCode: 401,
+                message: 'Invalid token',
+            };
+        }
+
+        // check if email is valid
+        const user = await prisma.user.findUnique({
+            where: {
+                //@ts-ignore
+                email: decodedToken.email,
+                token,
+            },
+        });
+
+        // check if user exists
+        if (!user) {
+            return {
+                statusCode: 404,
+                message: 'User not found',
+            };
+        }
+
+        // update user
+        await prisma.user.update({
+            where: {
+                id: user.id,
+            },
+            data: {
+                isApproved: true,
+                otp: '',
+            },
+        });
+
+        //password reset
+        user.password = '';
+
+        // return response
+        return {
+            statusCode: 200,
+            message: 'success',
+            data: {
+                user,
+            },
+        };
     }
 
     // sign in

@@ -4,7 +4,7 @@ import * as socketIO from 'socket.io';
 // file imports
 import app from '@/app';
 import { logger, secrets } from '@/core';
-import { errorHandler } from './middleware/rest';
+import { errorHandler } from './middleware';
 
 // server initialization
 const server = http.createServer(app);
@@ -30,10 +30,6 @@ io.on('connection', (socket) => {
 
 // set io in app
 app.set('socket', io);
-
-// start graphql server
-import { graphqlServerStart } from './graphql';
-graphqlServerStart();
 
 // global error handler
 app.use(errorHandler);

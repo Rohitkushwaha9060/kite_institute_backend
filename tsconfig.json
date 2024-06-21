@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es2020",
+        "target": "es2016",
         "module": "commonjs",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
@@ -12,7 +12,8 @@
         "baseUrl": ".",
         "paths": {
             "@/*": ["./src/*"]
-        }
+        },
+        "typeRoots": ["node_modules/@types", "src/interfaces"]
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules", "dist", "**/*.spec.ts"]

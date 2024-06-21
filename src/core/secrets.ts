@@ -12,6 +12,10 @@ const _secrets = {
     // cors
     ALLOW_ORIGIN_ONE: process.env.ALLOW_ORIGIN_ONE,
 
+    // jwt
+    ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET!,
+    REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET!,
+
     // aws
     AWS_SECRET_REGION: process.env.AWS_SECRET_REGION,
     AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
