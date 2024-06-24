@@ -12,8 +12,7 @@
         "baseUrl": ".",
         "paths": {
             "@/*": ["./src/*"]
-        },
-        "typeRoots": ["node_modules/@types", "src/interfaces"]
+        }
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules", "dist", "**/*.spec.ts"]
