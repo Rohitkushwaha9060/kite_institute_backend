@@ -2,6 +2,7 @@ import { UserModel, tokenService, hashService, generateOTP } from '@/lib';
 import { ServiceResponse } from '@/types';
 import { emailService } from './email';
 import { secrets } from '@/core';
+import { JwtPayload } from 'jsonwebtoken';
 
 class AuthService {
     // sign up
@@ -142,7 +143,7 @@ class AuthService {
     // verify email
     async verifyEmail(token: string, otp: string) {
         // check if token is valid
-        const decodedToken = await tokenService.verifyTokenJwt(
+        const decodedToken: any = await tokenService.verifyTokenJwt(
             token,
             secrets.ACCESS_TOKEN_SECRET
         );
@@ -158,7 +159,6 @@ class AuthService {
         // check if email is valid
         const user = await UserModel.findUnique({
             where: {
-                //@ts-ignore
                 email: decodedToken.email,
                 token,
             },

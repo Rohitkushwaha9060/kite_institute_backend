@@ -77,7 +77,6 @@ class AuthController {
             return next(new HttpError('OTP is required', 400));
         }
 
-        //@ts-ignore
         const token = req.token!;
         if (!token) {
             return next(new HttpError('Token is required', 400));
