@@ -1,8 +1,8 @@
-import { UserModel, tokenService, hashService, generateOTP } from '@/lib';
+import { UserModel } from '@/core';
 import { ServiceResponse } from '@/types';
 import { emailService } from './email';
 import { secrets } from '@/core';
-import { JwtPayload } from 'jsonwebtoken';
+import { utilsService } from './utils';
 
 class AuthService {
     // sign up
@@ -31,10 +31,10 @@ class AuthService {
         }
 
         // hash password
-        const hashedPassword = await hashService.hashPasswordBcrypt(password);
+        const hashedPassword = await utilsService.hashPasswordBcrypt(password);
 
         // otp verification
-        const otp = String(await generateOTP());
+        const otp = String(await utilsService.generateOTP());
 
         // create user
         const newUser = await UserModel.create({
@@ -48,7 +48,7 @@ class AuthService {
         });
 
         // generate token
-        const token = await tokenService.createTokenJwt(
+        const token = await utilsService.createTokenJwt(
             {
                 name,
                 email,
@@ -105,10 +105,10 @@ class AuthService {
         }
 
         // otp verification
-        const otp = String(await generateOTP());
+        const otp = String(await utilsService.generateOTP());
 
         // generate token
-        const token = await tokenService.createTokenJwt(
+        const token = await utilsService.createTokenJwt(
             {
                 email: user.email,
             },
@@ -143,7 +143,7 @@ class AuthService {
     // verify email
     async verifyEmail(token: string, otp: string) {
         // check if token is valid
-        const decodedToken: any = await tokenService.verifyTokenJwt(
+        const decodedToken: any = await utilsService.verifyTokenJwt(
             token,
             secrets.ACCESS_TOKEN_SECRET
         );

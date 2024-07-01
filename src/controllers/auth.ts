@@ -1,5 +1,5 @@
 import { HttpError } from '@/errors';
-import { signUpSchema } from '@/lib';
+import { signUpSchema } from '@/core';
 import { authService } from '@/services';
 import { Request, Response, NextFunction } from 'express';
 
